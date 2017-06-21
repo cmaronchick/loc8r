@@ -1,31 +1,3 @@
-var mongoose = require('mongoose');
-
-var openingTimeSchema = new mongoose.Schema({
-    days: {type: String, required: true},
-    opening: String,
-    closing: String,
-    closed: {type: Boolean, required: true}
-});
-
-var reviewSchema = new mongoose.Schema({
-    author: String,
-    rating: {type: Number, required: true, min: 0, max: 5},
-    reviewTimestamp: {type: Date, "default": Date.now},
-    reviewText: String
-});
-
-var locationSchema = new mongoose.Schema ({
-            name: String,
-            address: String,
-            facilities: [String],
-            coords: {type: [Number], index: '2dsphere'},
-            rating: {type: Number, "default": 0, min: 0, max: 5},
-            openingTimes: [openingTimeSchema],
-            reviews: reviewSchema
-});
-
-mongoose.model("Location", locationSchema);
-
 /* GET 'home' page */
 module.exports.homeList = function(req, res) {
     res.render('locations-list', {

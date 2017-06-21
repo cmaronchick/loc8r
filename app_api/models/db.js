@@ -48,4 +48,4 @@ process.on('SIGTERM', function() {
 });
 
 
-require('../controllers/locations');
+require('./locations');
