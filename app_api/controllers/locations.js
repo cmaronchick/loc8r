@@ -30,7 +30,7 @@ var theEarth = (function() {
 module.exports.locationsListByDistance = function (req, res) {
     var lng = parseFloat(req.query.lng);
     var lat = parseFloat(req.query.lat);
-    var max = 100000;
+    var max = 20;
     if (req.query.max > 0) {
         max = req.query.max;
     }
@@ -43,6 +43,9 @@ module.exports.locationsListByDistance = function (req, res) {
         maxDistance: theEarth.getRadsFromDistance(max),
         num: 10
     }
+            console.log("point = ", point);
+            console.log("geoOptions = ", geoOptions);
+    
     if (!lng || !lat) {
         sendJsonResponse({
             "message": "lng and lat query parameters are required"
@@ -54,6 +57,7 @@ module.exports.locationsListByDistance = function (req, res) {
         if (err) {
             sendJsonResponse(res, 404, err);
         } else {
+            console.log("results = ", results);
             results.forEach(function(doc) {
                 locations.push({
                     distance: theEarth.getDistanceFromRads(doc.dis),
@@ -64,6 +68,7 @@ module.exports.locationsListByDistance = function (req, res) {
                     _id: doc.obj._id
                 });
             });
+            console.log("locations = ", locations);
             sendJsonResponse(res, 200, locations);
         }
     });
@@ -164,4 +169,25 @@ module.exports.locationsUpdateOne = function (req, res) {
             }
         );
 };
-module.exports.locationsDeleteOne = function (req, res) {};
+module.exports.locationsDeleteOne = function (req, res) {
+    var locationid = req.params.locationid;
+    if (locationid) {
+        Loc
+            .findByIdAndRemove(locationid)
+            .exec(
+                function (err, location) {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            "message": "locationid not found"
+                        });
+                        return;
+                    }
+                    sendJsonResponse(res, 200, null);
+                }
+            );
+    } else {
+        sendJsonResponse(res, 400, {
+            "message": "A locationid must be provided"
+        });
+    }
+};
