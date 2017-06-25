@@ -7,8 +7,27 @@ var sendJsonResponse = function(res, status, content) {
 }
 
 module.exports.reviewsCreate = function(req, res) {
-    
-    var doAddReview = function(req, res, location) {
+    if (req.params.locationid) {
+        Loc
+        .findById(req.params.locationid)
+        .select('reviews')
+        .exec(
+            function(err, location) {
+            if (err) {
+                sendJSONresponse(res, 400, err);
+            } else {
+                doAddReview(req, res, location);
+            }
+            }
+        );
+    } else {
+        sendJSONresponse(res, 404, {
+        "message": "Not found, locationid required"
+        });
+    }
+};
+
+var doAddReview = function(req, res, location) {
         if (!location) {
             sendJsonResponse(res, 404, {
                 "message": "locationid not found"
@@ -63,26 +82,7 @@ module.exports.reviewsCreate = function(req, res) {
             });
         }
     };
-    var locationid = req.params.locationid;
-    if (locationid) {
-        Loc
-            .findById(locationid)
-            .select('reviews')
-            .exec(
-                function(err, location) {
-                    if (err) {
-                        sendJsonResponse(res, 400, err);
-                    } else {
-                        doAddReview(req, res, location);
-                    }
-                }
-            );
-    } else {
-        sendJsonResponse(res, 404, {
-            "message": "Not found. locationid required"
-        });
-    }
-};
+
 module.exports.reviewsReadOne = function (req, res) {
     if (req.params && req.params.locationid && req.params.reviewid) {
         Loc

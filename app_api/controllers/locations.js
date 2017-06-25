@@ -31,22 +31,21 @@ module.exports.locationsListByDistance = function (req, res) {
     var lng = parseFloat(req.query.lng);
     var lat = parseFloat(req.query.lat);
     var max = 20;
-    if (req.query.max > 0) {
-        max = req.query.max;
+    if (req.query.maxDistance > 0) {
+        max = req.query.maxDistance;
     }
     var point = {
         type: "Point",
         coordinates: [lng, lat]
     };
+    console.log("point = ", point);
     var geoOptions = {
         spherical: true,
-        maxDistance: theEarth.getRadsFromDistance(max),
+        // maxDistance: theEarth.getRadsFromDistance(max),
         num: 10
     }
-            console.log("point = ", point);
-            console.log("geoOptions = ", geoOptions);
     
-    if (!lng || !lat) {
+    if ((!lng && lng !== 0) || (!lat && lat !== 0)) {
         sendJsonResponse({
             "message": "lng and lat query parameters are required"
         });
@@ -57,7 +56,6 @@ module.exports.locationsListByDistance = function (req, res) {
         if (err) {
             sendJsonResponse(res, 404, err);
         } else {
-            console.log("results = ", results);
             results.forEach(function(doc) {
                 locations.push({
                     distance: theEarth.getDistanceFromRads(doc.dis),
@@ -69,6 +67,7 @@ module.exports.locationsListByDistance = function (req, res) {
                 });
             });
             console.log("locations = ", locations);
+
             sendJsonResponse(res, 200, locations);
         }
     });
@@ -102,7 +101,7 @@ module.exports.locationsCreate = function (req, res) {
 
     // console.log("ObjectId('" + req.params.locationId + "')");
 module.exports.locationsReadOne = function (req, res) {
-    if (!req.params && req.pams.locationid) {
+    if (req.params && req.params.locationid) {
     Loc
         .findById(req.params.locationid)
         .exec(function(err, location) {
