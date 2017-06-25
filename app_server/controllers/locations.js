@@ -1,6 +1,6 @@
 var request = require('request');
 var apiOptions = {
-    server : "http://localhost",
+    server : "http://localhost:3000",
     PORT : "3000"
 };
 if (process.env.NODE_ENV === 'production') {
@@ -109,6 +109,7 @@ var getLocationInfo = function (req, res, callback) {
         method: "GET",
         json: {}
     };
+    console.log("requestOptions = ", requestOptions);
     request(
         requestOptions,
         function(err, response, body) {
