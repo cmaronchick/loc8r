@@ -4,7 +4,7 @@ var apiOptions = {
     PORT : "3000"
 };
 if (process.env.NODE_ENV === 'production') {
-    apiOptions.server = process.env.MONGODB_URI;
+    apiOptions.server = "https://glacial-beach-36022.herokuapp.com/";
     apiOptions.PORT = process.env.PORT;
 
 };
