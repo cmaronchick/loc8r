@@ -56,7 +56,7 @@ var _showError = function (req, res, statusCode) {
         title = "404, page not found";
         content = "Oh dear. Looks like we can't find this page. Sorry.";
     } else {
-        title = status + ", something went wrong.";
+        title = statusCode + ", something went wrong.";
         content = "Something, somewhere, has gone just a little bit wrong.";
     }
     res.status(statusCode);
@@ -154,7 +154,8 @@ module.exports.locationInfo = function (req, res) {
 var renderReviewPage = function(req, res, locDetail) {
     res.render('location-review-form', {
         title: 'Review ' + locDetail.name + ' on Loc8r',
-        location: locDetail
+        location: locDetail,
+        error: req.query.formError
     });
 }
 
@@ -182,17 +183,25 @@ module.exports.doAddReview = function (req, res) {
         method: "POST",
         json: postdata
     };
-    console.log("requestOptions = ",requestOptions);
-    request(
-        requestOptions,
-        function(err, response, body) {
-            if (response.statusCode === 201) {
-                res.redirect('/location/' + locationid);
-            } else {
-                _showError(req, res, response.statusCode);
+    if (!postdata.author || !postdata.rating || !postdata.reviewText) {
+        res.redirect('/location/' + locationid + '/review/new?formError=val');
+    } else {
+        console.log("requestOptions = ",requestOptions);
+        request(
+            requestOptions,
+            function(err, response, body) {
+                console.log("statusCode = ", response.statusCode);
+                console.log("body.name = ", body.name);
+                if (response.statusCode === 201) {
+                    res.redirect('/location/' + locationid);
+                } else if (response.statusCode === 400 && body.name && body.name === "ValidationError") {
+                    res.redirect('/location/' + locationid + '/review/new?formError=val');
+                } else {
+                    _showError(req, res, response.statusCode);
+                }
             }
-        }
-    )
+        )
+    }
 };
 
 /* GET 'About' Page */
