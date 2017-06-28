@@ -1,9 +1,12 @@
 var request = require('request');
 var apiOptions = {
-    server : "http://localhost:3000"
+    server : "http://localhost:3000",
+    PORT : "3000"
 };
 if (process.env.NODE_ENV === 'production') {
-    apiOptions.server = "https://glacial-beach-36022";
+    apiOptions.server = "https://glacial-beach-36022.herokuapp.com";
+    apiOptions.PORT = process.env.PORT;
+
 };
 var requestOptions = {
     url: apiOptions.server
@@ -120,6 +123,7 @@ var getLocationInfo = function (req, res, callback) {
         method: "GET",
         json: {}
     };
+    console.log("requestOptions = ", requestOptions);
     request(
         requestOptions,
         function(err, response, body) {
