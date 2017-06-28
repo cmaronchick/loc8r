@@ -43,9 +43,13 @@ var renderHomePage = function (req, res, responseBody) {
    });
 }
 
+var isNumeric = function(n) {
+    return !isNaN(parseFloat(n) && isFinite(n));
+}
+
 var _formatDistance = function(distance) {
     var numDistance, unit;
-    // if (distance && isNumeric(distance)) {
+    if (distance && isNumeric(distance)) {
         if (distance > 1) {
             numDistance = parseFloat(distance).toFixed(1);
             unit = 'km';
@@ -54,9 +58,9 @@ var _formatDistance = function(distance) {
             unit = 'm';
         }
         return numDistance + unit;
-    // } else {
-    //     return "?";
-    // }
+    } else {
+        return "?";
+    }
 }
 
 var _showError = function (req, res, statusCode) {
@@ -165,7 +169,8 @@ var renderReviewPage = function(req, res, locDetail) {
     res.render('location-review-form', {
         title: 'Review ' + locDetail.name + ' on Loc8r',
         location: locDetail,
-        error: req.query.formError
+        error: req.query.formError,
+        url: req.originalUrl
     });
 }
 

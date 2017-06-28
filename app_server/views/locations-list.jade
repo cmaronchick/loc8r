@@ -8,11 +8,13 @@ block content
       .col-lg-6
         h1= pageHeader.title
           small &nbsp;#{pageHeader.strapline}
-    .row
-      .col-xs-12.col-sm-8(ng-controller="locationsListCtrl")
+    .row(ng-controller="locationsListCtrl")
+      .col-xs-12.col-sm-8
+        label(for="filter") Filter results
+        input#filter(type="text", name="filter", ng-model="textFilter")
         .error {{ message }}
         .row.list-group
-            .col-xs-12.list-group-item(ng-repeat="location in data.locations")
+            .col-xs-12.list-group-item(ng-repeat="location in data.locations | filter : textFilter")
               h4.locationName
                 a(href="/location/{{ location._id }}") {{ location.name }}
                 small(rating-stars, rating="location.rating")
@@ -21,4 +23,10 @@ block content
               p
                   span.label.label-warning(ng-repeat="facility in location.facilities") {{ facility }}
                   &nbsp;
-      .col-xs-12.col-sm-4
+      .col-xs-12.col-sm-4.location-map
+                .panel.panel-primary
+                  .panel-heading
+                    h2.panel-title Location map
+                  .panel-body
+                    img.img-responsive.img-rounded(src='http://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lng }}&zoom]17&size=400x350&sensor=false&markers={{ lat }},{{ lng }}&scale=2')
+      

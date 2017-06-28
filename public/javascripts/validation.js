@@ -1,6 +1,6 @@
 $('#addReview').submit(function (e) {
     $('.alert.alert-danger').hide();
-    if (!$('input#name').val() || !$('selectRating').val() || !$('textarea#review').val()) {
+    if (!$('input#author').val() || !$('select#rating').val() || !$('textarea#reviewText').val()) {
         if ($('.alert.alert-danger').length) {
             $('.alert.alert-danger').show();
         } else {

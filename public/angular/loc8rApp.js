@@ -22,26 +22,40 @@ var formatDistance = function() {
     };
 };
 
-var locationsListCtrl = function ($scope) {
-    $scope.message = "Check your location";
-    $scope.data = {
-        locations: [{
-            name: 'Strickland Propane',
-            address: '123 Rainy Street, Arlen, TX, 12345',
-            rating: 3,
-            facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-            distance: '0.296456',
-            _id: '594837f9adcd36a01bfc957e'
-        },
-        {
-            name: 'Thatherton Fuels',
-            address: '123 Thatherton Street, McMaynerberry, TX, 12346',
-            rating: 1,
-            facilities: ['Hot drinks'],
-            distance: '0.296457',
-            _id: '59483869adcd36a01bfc957f'
-        }]
-    }
+var locationsListCtrl = function ($scope, loc8rData, geolocation) {
+    var data;
+    $scope.message = "Checking your location ...";
+    $scope.getData = function(position) {
+        var lat = position.coords.latitude,
+            lng = position.coords.longitude;
+        $scope.lat = lat;
+        $scope.lng = lng;
+        $scope.message = "Searching for nearby places ...";
+        loc8rData.locationByCoords(lng, lat)
+            .then(function(success) {
+                data = success.data;
+                $scope.data = { locations : data };
+                $scope.message = data.length > 0 ? "" : "No locations found";
+            },
+            function(error) {
+                console.log(error);
+                $scope.message = "Sorry, something's gone wrong."
+            });
+    };
+
+    $scope.showError = function(error) {
+        $scope.$apply(function () {
+            $scope.message = error.message;
+        });
+    };
+
+    $scope.noGeo = function() {
+        $scope.$apply(function() {
+            $scope.message = "Geolocation not supported by this browser.";
+        });
+    };
+
+    geolocation.getPosition($scope.getData, $scope.showError, $scope.noGeo);
 };
 
 var ratingStars = function () {
@@ -53,8 +67,32 @@ var ratingStars = function () {
     };
 };
 
+var loc8rData = function($http) {
+    var locationByCoords = function(lng, lat) {
+        return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '');
+    }
+    return {
+        locationByCoords : locationByCoords
+    }
+};
+
+var geoLocation = function() {
+    var getPosition = function (cbSuccess, cbError, cbNoGeo) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(cbSuccess, cbError);
+        } else {
+            cbNoGeo();
+        }
+    };
+    return {
+        getPosition : getPosition
+    };
+};
+
 angular
     .module('loc8rApp')
     .controller('locationsListCtrl', locationsListCtrl)
     .filter('formatDistance', formatDistance)
-    .directive('ratingStars', ratingStars);
+    .directive('ratingStars', ratingStars)
+    .service('loc8rData', loc8rData)
+    .service('geolocation', geoLocation);
