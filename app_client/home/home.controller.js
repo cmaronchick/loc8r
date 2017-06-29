@@ -21,9 +21,9 @@
             loc8rData.locationByCoords(lat, lng)
                 .then(function (success) {
                     vm.message = success.data.length > 0 ? "" : "No locations found nearby";
-                    vm.data = { locations : data };
-                })
-                .otherwise(function (e) {
+                    vm.data = { locations : success.data };
+                },
+                function (error) {
                     vm.message = "Sorry, something's gone wrong.";
                 });
         };
