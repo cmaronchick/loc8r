@@ -1,10 +1,6 @@
 $('#addReview').submit(function (e) {
     $('.alert.alert-danger').hide();
-<<<<<<< HEAD
     if (!$('input#author').val() || !$('select#rating').val() || !$('textarea#reviewText').val()) {
-=======
-    if (!$('input#name').val() || !$('select#rating').val() || !$('textarea#review').val()) {
->>>>>>> 629151f3ab8f2d207f45078b904e18555c9cfd89
         if ($('.alert.alert-danger').length) {
             $('.alert.alert-danger').show();
         } else {
