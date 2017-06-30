@@ -31,7 +31,7 @@ var locationsListCtrl = function ($scope, loc8rData, geolocation) {
         $scope.lat = lat;
         $scope.lng = lng;
         $scope.message = "Searching for nearby places ...";
-        loc8rData.locationByCoords(lng, lat)
+        loc8rData.locationByCoords(lat, lng)
             .then(function(success) {
                 data = success.data;
                 $scope.data = { locations : data };
@@ -68,7 +68,7 @@ var ratingStars = function () {
 };
 
 var loc8rData = function($http) {
-    var locationByCoords = function(lng, lat) {
+    var locationByCoords = function(lat, lng) {
         return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '');
     }
     return {
