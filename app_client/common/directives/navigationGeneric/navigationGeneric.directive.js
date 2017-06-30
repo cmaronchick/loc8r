@@ -5,7 +5,7 @@
     function navigationGeneric () {
         return {
             restrict: 'EA',
-            templateUrl: '/common/directives/navigationGeneric.template.html'
+            templateUrl: '/common/directives/navigationGeneric/navigationGeneric.template.html'
         };
     }
 })();

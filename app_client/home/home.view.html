@@ -19,19 +19,17 @@
                 </p>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4 location-map">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Location map</h2>
-                            <div class="panel-body">
-                                <img class="img-responsive img-rounded" src="http://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lng }}&zoom]17&size=400x350&sensor=false&markers={{ lat }},{{ lng }}&scale=2">
-                            </div>
-                    </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 location-map">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Location map</h2>
+                        <div class="panel-body">
+                            <img class="img-responsive img-rounded" src="http://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lng }}&zoom]17&size=400x350&sensor=false&markers={{ lat }},{{ lng }}&scale=2">
+                        </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-4">
-                <p class="lead">{{ vm.sidebar.content }}</p>
-            </div>
+            <p class="lead">{{ vm.sidebar.content }}</p>
         </div>
     </div>
     <footer-generic></footer-generic>
