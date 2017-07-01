@@ -1,0 +1,80 @@
+<navigation-generic></navigation-generic>
+
+<div class="container">
+    <page-header content="vm.pageHeader"></page-header>
+    <div class="row">
+        <div class="col-xs-12 col-md-9">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <p class="rating" rating-stars rating="vm.data.location.rating"></p>
+                    <p>{{vm.data.location.address}}</p>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Opening hours</h2>
+                            <div class="panel-body">
+                                <p ng-repeat="time in vm.data.location.openingTimes">
+                                    {{ time.days }} :
+                                    <!--{{if !time.closed : time.opening} - time.closing}}
+                                    else
+                                        &nbsp;Closed-->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                        <h2 class="panel-title">Facilities</h2>
+                        <div class="panel-body">
+                        <span ng-repeat="facility in vm.data.location.facilities" class="label label-warning label-facility">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            {{facility}}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 location-map">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Location Map</h2>
+                        </div>
+                        <div class="panel-body">
+                            <img class="img-responsive img-rounded" src="http://maps.googleapis.com/maps/api/staticmap?center={{vm.data.location.coords[1]}},{{vm.data.location.coords[0]}}&zoom=17&size=400x350&sensor=false&markers={{vm.data.location.coords[1]}},{{vm.data.location.coords[0]}}&scale=2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-primary review-panel">
+                        <div class="panel-heading">
+                            <a class="btn btn-default pull-right" href="/#/location/{{vm.locationid}}/review/new">Add review</a>
+                            <h2 class="panel-title">Customer Reviews</h2>
+                            <div class="clearfix"></div>
+                            <div class="panel-body review-container">
+                                    <div class="review" ng-repeat="review in vm.data.location.reviews">
+                                        <div class="row">
+                                            <div class="well well-sm review-header">
+                                                <span rating-stars class="rating-stars" rating="review.rating"></span>
+                                                <span class="reviewAuthor">{{ review.author }}</span>
+                                                <small class="reviewTimestamp">{{ review.createdOn }}</small>
+                                            </div>
+
+                                            <div class="col-xs-12">
+                                                <p ng-bind-html="review.reviewText | addHtmlLineBreaks"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-3">
+                <p class="lead">{{ vm.data.location.name }} {{vm.data.sidebar.context}}</p>
+                <p>{{vm.data.sidebar.callToAction}}</p>
+            </div>                              
+        </div>
+    </div>
+    <footer-generic></footer-generic>
+</div>

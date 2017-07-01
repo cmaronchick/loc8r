@@ -1,7 +1,7 @@
 <navigation-generic></navigation-generic>
 <div class="container">
     <page-header content="vm.pageHeader"></page-header>
-    <div class="row" ng-controller="locationsListCtrl">
+    <div class="row">
         <div class="col-xs-12 col-sm-8">
             <label for="filter">Filter results</label>
             <input id="filter" type="text" name="filter" ng-model="textFilter">
@@ -9,7 +9,7 @@
             <div class="row list-group">
                 <div class="col-xs-12 list-group-item" ng-repeat="location in vm.data.locations | filter : textFilter">
                 <h4 class="locationName">
-                    <a href="/location/{{ location._id }}">{{ location.name }}</a>
+                    <a href="/#/location/{{ location._id }}">{{ location.name }}</a>
                     <small rating-stars class="rating-stars" rating="location.rating"></small>
                     <span class="badge pull-right badge-default">{{ location.distance | formatDistance }}</span>
                 </h4>
@@ -25,7 +25,7 @@
                 <div class="panel-heading">
                     <h2 class="panel-title">Location map</h2>
                         <div class="panel-body">
-                            <img class="img-responsive img-rounded" src="http://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lng }}&zoom]17&size=400x350&sensor=false&markers={{ lat }},{{ lng }}&scale=2">
+                            <img class="img-responsive img-rounded" src="http://maps.googleapis.com/maps/api/staticmap?center={{ position.coords.latitude }},{{ vm.getData.lng }}&zoom]17&size=400x350&sensor=false&markers={{ vm.getData.lat }},{{ vm.getData.lng }}&scale=2">
                         </div>
                 </div>
             </div>

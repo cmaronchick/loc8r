@@ -14,6 +14,7 @@
             content: "Looking for wifi and a seat etc etc"
         };
         vm.message = "Checking your location ...";
+        console.log(geolocation);
         vm.getData = function (position) {
             var lat = position.coords.latitude,
                 lng = position.coords.longitude;
