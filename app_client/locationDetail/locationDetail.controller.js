@@ -32,6 +32,10 @@
                         }
                     }
                 });
+                modalInstance.result.then(function(success) {
+                    console.log("modalInstance = ",success);
+                    vm.data.location.reviews.push(success);
+                })
             };
     }
 

@@ -10,9 +10,15 @@
         var locationById = function(locationid) {
             return $http.get('/api/locations/' + locationid);
         }
+
+        var addReviewById = function(locationid, formData) {
+            return $http.post('/api/locations/' + locationid + '/reviews', formData);
+        }
+
         return {
             locationByCoords : locationByCoords,
-            locationById : locationById
+            locationById : locationById,
+            addReviewById : addReviewById
         };
     }
 })();

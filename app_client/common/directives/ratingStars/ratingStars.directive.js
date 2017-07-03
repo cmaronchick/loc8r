@@ -4,8 +4,9 @@
         .directive('ratingStars', ratingStars);
 
     function ratingStars() {
+        console.log("called rating stars");
         return {
-            restrict: 'EA',
+            restrict: 'A',
             scope: {
                 thisRating : '=rating'
             },

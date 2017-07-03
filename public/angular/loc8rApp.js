@@ -58,14 +58,14 @@ var locationsListCtrl = function ($scope, loc8rData, geolocation) {
     geolocation.getPosition($scope.getData, $scope.showError, $scope.noGeo);
 };
 
-var ratingStars = function () {
-    return {
-        scope: {
-            thisRating: '=rating'
-        },
-        templateUrl: '/angular/rating-stars.html'
-    };
-};
+// var ratingStars = function () {
+//     return {
+//         scope: {
+//             thisRating: '=rating'
+//         },
+//         templateUrl: '/angular/rating-stars.html'
+//     };
+// };
 
 var loc8rData = function($http) {
     var locationByCoords = function(lat, lng) {
@@ -89,10 +89,12 @@ var geoLocation = function() {
     };
 };
 
+
+    // .directive('ratingStars', ratingStars)
+
 angular
     .module('loc8rApp')
     .controller('locationsListCtrl', locationsListCtrl)
     .filter('formatDistance', formatDistance)
-    .directive('ratingStars', ratingStars)
     .service('loc8rData', loc8rData)
     .service('geolocation', geoLocation);
