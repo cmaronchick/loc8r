@@ -6,9 +6,9 @@
     function ratingStars() {
         console.log("called rating stars");
         return {
-            restrict: 'A',
+            restrict: 'EA',
             scope: {
-                thisRating : '=rating'
+                thisRating : '=stars'
             },
             templateUrl: '/common/directives/ratingStars/ratingStars.template.html'
         };

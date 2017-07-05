@@ -13,11 +13,11 @@ module.exports.reviewsCreate = function(req, res) {
         .select('reviews')
         .exec(
             function(err, location) {
-            if (err) {
-                sendJSONresponse(res, 400, err);
-            } else {
-                doAddReview(req, res, location);
-            }
+                if (err) {
+                    sendJSONresponse(res, 400, err);
+                } else {
+                    doAddReview(req, res, location);
+                }
             }
         );
     } else {
@@ -28,21 +28,25 @@ module.exports.reviewsCreate = function(req, res) {
 };
 
 var doAddReview = function(req, res, location) {
+    console.log("Adding review");   
         if (!location) {
             sendJsonResponse(res, 404, {
                 "message": "locationid not found"
             });
         } else {
+            console.log("doAddReview =",location);
             location.reviews.push({
                 author: req.body.author,
                 rating: req.body.rating,
                 reviewText: req.body.reviewText
             });
+            console.log("review push completed");
             location.save(function (err, location) {
                 var thisReview;
                 if (err) {
                     sendJsonResponse(res, 400, err);
                 } else {
+                    console.log("Updating average rating");
                     updateAverageRating(location._id);
                     thisReview = location.reviews[location.reviews.length - 1];
                     sendJsonResponse(res, 201, thisReview);
@@ -58,9 +62,11 @@ var doAddReview = function(req, res, location) {
             .exec(
                 function(err, location) {
                     if (!err) {
+                        console.log("doing SetAverageRating");
                         doSetAverageRating(location);
                     }
                 });
+            console.log("Updating average rating - CONFIRMED");
     };
     
     var doSetAverageRating = function(location) {
@@ -71,7 +77,9 @@ var doAddReview = function(req, res, location) {
             for (i = 0; i < reviewCount; i++) {
                 ratingTotal = ratingTotal + location.reviews[i].rating;
             }
-            ratingsAverage = parseInt(ratingTotal / reviewCount, 10);
+            console.log("reviewCount = ", reviewCount);
+            console.log("ratingTotal = ", ratingTotal);
+            ratingAverage = parseInt(ratingTotal / reviewCount, 10);
             location.rating = ratingAverage;
             location.save(function(err) {
                 if (err) {
@@ -80,6 +88,7 @@ var doAddReview = function(req, res, location) {
                     console.log("Average rating updated to ", ratingAverage);
                 }
             });
+            console.log("doing SetAverageRating - CONFIRMED");
         }
     };
 
